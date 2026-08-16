@@ -35,17 +35,17 @@ func setupRouter() *gin.Engine {
 	return router
 }
 
-func setupAws() {
-	s3Svc, details := services.ConfigAws()
+func setupStorage() {
+	fileStore, details := services.ConfigStorage()
 	log.Println("About to Init DB")
-	err := database.InitDb(s3Svc, details)
+	err := database.InitDb(fileStore, details)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func main() {
-	setupAws()
+	setupStorage()
 	router := setupRouter()
 	router.Run(":8080")
 }

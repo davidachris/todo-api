@@ -78,7 +78,7 @@ func ConfigAws() (*S3Serivce, *S3Details) {
 	details := &S3Details{
 		BucketName: bucketName,
 		Key:        "tmp/todos.db",
-		FileName:   "/tmp/todos.db",
+		FileName:   sqlitePath(),
 	}
 	return s3Svc, details
 }

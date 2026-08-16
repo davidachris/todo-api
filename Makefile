@@ -1,8 +1,8 @@
 build:
 	env GOOS=linux env go build -ldflags="-s -w" -o bin/bootstrap main.go; zip -jr bootstrap.zip ./bin/bootstrap
 
-run: build
-	@./bin/todo-api
+run:
+	go run .
 
 clean:
 	@rm -rf ./bin

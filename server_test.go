@@ -2,10 +2,13 @@ package main
 
 import (
 	"bytes"
+	"davidc/todo-api/database"
 	"davidc/todo-api/models"
+	"davidc/todo-api/services"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +17,15 @@ import (
 
 func routerAndHttpTest() (*gin.Engine, *httptest.ResponseRecorder) {
 	return setupRouter(), httptest.NewRecorder()
+}
+
+func initTestDB(t *testing.T) {
+	t.Helper()
+	path := filepath.Join(t.TempDir(), "todos.db")
+	err := database.InitDb(services.NewNoopStore(), &services.S3Details{FileName: path})
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestPingRoute(t *testing.T) {
@@ -26,6 +38,7 @@ func TestPingRoute(t *testing.T) {
 }
 
 func TestCreateTask(t *testing.T) {
+	initTestDB(t)
 	newTask := models.TaskRequest{
 		Description: "Hello",
 		Completed:   0,
