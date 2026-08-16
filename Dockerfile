@@ -8,7 +8,7 @@ RUN go mod download && go mod verify
 
 COPY . .
 
-RUN go build -o server main.go
+RUN CGO_ENABLED=0 go build -ldflags '-s -w' -o server main.go
 
 FROM scratch
 
